@@ -20,7 +20,12 @@ export default class LoginScreen extends Component {
 
     handlePressLogin = () => {
         const { username, password } = this.state;
-        var data = { username: "", password: "" };
+        const isValid = this.isEmailValid(username);
+        if(!isValid){
+            this.setState({ isAttempting: false, isFailedAttempt: false, failedLoginMsg: "Invalid username, please enter valid email" })
+            return;
+        }
+        var data = { username: "demo@example.com", password: "example" };
         this.setState({ isAttempting: true });
         //post data
         setTimeout(function () {
@@ -36,6 +41,10 @@ export default class LoginScreen extends Component {
         }.bind(this), 1500);
 
     }
+    isEmailValid(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
     handleFailedLogin() {
         var waitTime = 10;
         var counter = 0
