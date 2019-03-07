@@ -28,7 +28,7 @@ export default class WelcomeScreen extends Component {
             <Image
               style={styles.image}
               source={require('../../images/video.png')} />
-            <Text style={styles.title}>And that we persive about 24 images in one second watching a video</Text>
+            <Text style={styles.title}>And that we perceive about 24 images in one second watching a video</Text>
           </View>
 
           <View style={[styles.element, { width: width - 100 }]}>
