@@ -11,7 +11,8 @@ export default class Login extends Component {
             username: "",
             password: "",
             remember: true,
-            isLoading: true,
+            isLoading: false,
+            errorMsg:""
         }
     }
     handleChangeUsername(event) {
@@ -30,15 +31,43 @@ export default class Login extends Component {
         });
     }
 
-    handleLogin(){
-        this.props.onLogin();
+    handleLogin() {
+        const { username, password } = this.state;
+        const isValid = this.isEmailValid(username);
+        if (!isValid) {
+            this.setState({ errorMsg: "Invalid username, please enter valid email" });
+            return;
+        }
+        var data = { username: "demo@example.com", password: "example" };
+        this.setState({ isLoading: true });
+        //post data
+        setTimeout(function () {
+            this.setState({ errorMsg: "" });
+            var success = data.username == username && data.password == password;
+            if (!success) {
+                this.handleFailedLogin();
+            } else {
+                this.setState({ isLoading: false });
+                this.props.onLogin();
+            }
+
+        }.bind(this), 1500);
+    }
+    handleFailedLogin(){
+        window.location.href = "https://www.covideo.com/login/ "
+    }
+
+    isEmailValid(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
     render() {
         return (
             <div className="login-container">
                 <div className="login-wrap">
+                
                     <img src={logo} className="login-logo" alt="logo" />
+                    <span>{this.state.errorMsg}</span>
                     <input
                         type="text"
                         className="margin-top30 text"
@@ -51,7 +80,7 @@ export default class Login extends Component {
                         onChange={this.handleChangePassword.bind(this)} />
                     <Button
                         className="margin-top15 primary"
-                        onClick={this.handleLogin.bind(this)} 
+                        onClick={this.handleLogin.bind(this)}
                         isLoading={this.state.isLoading}>
                         <strong>LOGIN</strong>
                     </Button>
