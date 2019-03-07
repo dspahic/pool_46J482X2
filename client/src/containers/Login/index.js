@@ -12,7 +12,7 @@ export default class Login extends Component {
             password: "",
             remember: true,
             isLoading: false,
-            errorMsg:""
+            errorMsg: ""
         }
     }
     handleChangeUsername(event) {
@@ -38,22 +38,31 @@ export default class Login extends Component {
             this.setState({ errorMsg: "Invalid username, please enter valid email" });
             return;
         }
-        var data = { username: "demo@example.com", password: "example" };
+        //var data = { username: "demo@example.com", password: "example" };
         this.setState({ isLoading: true });
-        //post data
-        setTimeout(function () {
-            this.setState({ errorMsg: "" });
-            var success = data.username === username && data.password === password;
-            if (!success) {
-                this.handleFailedLogin();
-            } else {
-                this.setState({ isLoading: false });
-                this.props.onLogin();
-            }
 
-        }.bind(this), 1500);
+        var object = {
+            "username": username,
+            "password": password,
+        };
+        fetch('http://localhost:8080/api/authenticate', {
+            method: 'post',
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+               },
+            body: JSON.stringify(object)
+        }).then(response => response.json())
+            .then(function (data) {
+                if (!data.valid) {
+                    this.handleFailedLogin();
+                } else {
+                    this.setState({ isLoading: false });
+                    this.props.onLogin();
+                }
+            }.bind(this));
     }
-    handleFailedLogin(){
+    handleFailedLogin() {
         window.location.href = "https://www.covideo.com/login/ "
     }
 
@@ -65,7 +74,7 @@ export default class Login extends Component {
         return (
             <div className="login-container">
                 <div className="login-wrap">
-                
+
                     <img src={logo} className="login-logo" alt="logo" />
                     <span>{this.state.errorMsg}</span>
                     <input
