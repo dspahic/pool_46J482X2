@@ -43,7 +43,7 @@ export default class Login extends Component {
         //post data
         setTimeout(function () {
             this.setState({ errorMsg: "" });
-            var success = data.username == username && data.password == password;
+            var success = data.username === username && data.password === password;
             if (!success) {
                 this.handleFailedLogin();
             } else {
