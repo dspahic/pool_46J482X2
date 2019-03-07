@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import { Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
 
-import LoginScreen from './containers/LoginScreen'
+import LoginScreen from './containers/LoginScreen';
+import WelcomeScreen from '.containers/WelcomeScreen';
 
 
 export default class App extends Component {
@@ -16,7 +17,7 @@ export default class App extends Component {
   onLogin() {
     this.setState({ isSignedIn: true })
   }
-  
+
   onLogout() {
     this.setState({ isSignedIn: false })
   }
@@ -24,7 +25,7 @@ export default class App extends Component {
   render() {
     return (
       this.state.isSignedIn ?
-        null:
+        <WelcomeScreen onLogout={this.onLogout} /> :
         <LoginScreen onLogin={this.onLogin} />
     );
   }
