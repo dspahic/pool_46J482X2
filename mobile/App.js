@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
 import LoginScreen from './containers/LoginScreen';
-import WelcomeScreen from '.containers/WelcomeScreen';
+import WelcomeScreen from './containers/WelcomeScreen';
 
 
 export default class App extends Component {
