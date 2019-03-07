@@ -25,20 +25,29 @@ export default class LoginScreen extends Component {
             this.setState({ isAttempting: false, isFailedAttempt: false, failedLoginMsg: "Invalid username, please enter valid email" })
             return;
         }
-        var data = { username: "demo@example.com", password: "example" };
         this.setState({ isAttempting: true });
-        //post data
-        setTimeout(function () {
-            var success = data.username == username && data.password == password;
-            this.setState({ isFailedAttempt: !success });
-            if (!success) {
-                this.handleFailedLogin();
-            } else {
-                this.setState({ isAttempting: false });
-                this.props.onLogin();
-            }
-
-        }.bind(this), 1500);
+        var object = {
+            "username": username,
+            "password": password,
+        };
+        fetch('http://10.0.2.2:8080/api/authenticate', {
+            method: 'post',
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+               },
+            body: JSON.stringify(object)
+        }).then(response => response.json())
+            .then(function (data) {
+                if (!data.valid) {
+                    this.handleFailedLogin();
+                } else {
+                    this.setState({ isAttempting: false });
+                    this.props.onLogin();
+                }
+            }.bind(this)).catch((error) => {
+                console.error(error);
+              });;
 
     }
     isEmailValid(email) {
