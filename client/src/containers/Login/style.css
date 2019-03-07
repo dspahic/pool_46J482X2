@@ -6,6 +6,7 @@
     background-image: url('./../../img/bg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    font-size: 12px;
   }
   .login-wrap{
     width: 260px;
@@ -44,4 +45,10 @@
     height: 32px;
     padding-left:10px ;
     outline: none;
+  }
+  .primary{
+    background-color: #ff9021
+  }
+  .secondary{
+    background-color: #001c5e
   }
