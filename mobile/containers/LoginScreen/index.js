@@ -19,12 +19,22 @@ export default class LoginScreen extends Component {
     }
 
     handlePressLogin = () => {
-        const { username, password } = this.state
+        const { username, password } = this.state;
+        var data = { username: "", password: "" };
         this.setState({ isAttempting: true });
         //post data
-        this.setState({ isFailedAttempt: false });
-        this.handleFailedLogin();
-            
+        setTimeout(function () {
+            var success = data.username == username && data.password == password;
+            this.setState({ isFailedAttempt: !success });
+            if (!success) {
+                this.handleFailedLogin();
+            } else {
+                this.setState({ isAttempting: false });
+                this.props.onLogin();
+            }
+
+        }.bind(this), 1500);
+
     }
     handleFailedLogin() {
         var waitTime = 10;
@@ -45,41 +55,41 @@ export default class LoginScreen extends Component {
     render() {
         const isEditable = !this.state.isAttempting;
         return (
-            <ScrollView  style={[{ backgroundColor: '#e8ebef' }]} keyboardShouldPersistTaps='always'>
+            <ScrollView style={[{ backgroundColor: '#e8ebef' }]} keyboardShouldPersistTaps='always'>
                 <View style={styles.container}>
-                        <Image
-                            style={[styles.stretch, { resizeMode: 'center', width: 240, height: 220, alignSelf: 'center', marginTop: 20 }]}
-                            source={require('../../images/covideo-logo-dark.png')} />
+                    <Image
+                        style={[styles.stretch, { resizeMode: 'center', width: 240, height: 220, alignSelf: 'center', marginTop: 20 }]}
+                        source={require('../../images/covideo-logo-dark.png')} />
 
-                        <Text style={styles.instructions}>{this.state.failedLoginMsg}</Text>
-                        <TextInput
-                            placeholder={"Username"}
-                            style={styles.input}
-                            onChangeText={(input) => this.setState({ username: input })}
-                            value={this.state.username}
-                            editable={isEditable}
-                            autoCorrect={false}
-                            autoCapitalize='none'
-                            returnKeyType='next'
-                            onSubmitEditing={() => this.refs.password.focus()} />
-                        <TextInput
-                            ref='password'
-                            placeholder={"Password"}
-                            style={styles.input}
-                            onChangeText={(input) => this.setState({ password: input })}
-                            value={this.state.password}
-                            editable={isEditable}
-                            secureTextEntry
-                            autoCorrect={false}
-                            autoCapitalize='none'
-                            returnKeyType='go'
-                            onSubmitEditing={() => this.handlePressLogin()} />
-                        <Button
-                            text="Sign In"
-                            backgroundColor='#ff9021'
-                            onPress={this.handlePressLogin}
-                            isLoading={this.state.isAttempting} />
-                    
+                    <Text style={styles.instructions}>{this.state.failedLoginMsg}</Text>
+                    <TextInput
+                        placeholder={"Username"}
+                        style={styles.input}
+                        onChangeText={(input) => this.setState({ username: input })}
+                        value={this.state.username}
+                        editable={isEditable}
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                        returnKeyType='next'
+                        onSubmitEditing={() => this.refs.password.focus()} />
+                    <TextInput
+                        ref='password'
+                        placeholder={"Password"}
+                        style={styles.input}
+                        onChangeText={(input) => this.setState({ password: input })}
+                        value={this.state.password}
+                        editable={isEditable}
+                        secureTextEntry
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                        returnKeyType='go'
+                        onSubmitEditing={() => this.handlePressLogin()} />
+                    <Button
+                        text="Sign In"
+                        backgroundColor='#ff9021'
+                        onPress={this.handlePressLogin}
+                        isLoading={this.state.isAttempting} />
+
                     <View style={styles.signUp}>
                         <Button
                             text="Sign Up"
